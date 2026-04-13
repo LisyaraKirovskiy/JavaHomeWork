@@ -1,3 +1,7 @@
+import Exceptions.InvalidAgeException;
+import Exceptions.InvalidEmailException;
+import Exceptions.InvalidLoginException;
+
 void main() {
     int choice=-1;
     String[] menuElements=new String[]{
@@ -7,6 +11,9 @@ void main() {
             "3.Найти четные числа",
             "4.Форматирование double массива",
             "5.Анализ двумерного массива",
+            "6.Деление",
+            "7.Банковский аккаунт",
+            "8.Создание пользователя с валидацией",
             "0.Выход"
     };
     while(choice!=0){
@@ -40,6 +47,21 @@ void main() {
             }
             case 5:{
                 analysisOfTwoDimensionalArray();
+                clearConsole();
+                break;
+            }
+            case 6:{
+                processingDivide();
+                clearConsole();
+                break;
+            }
+            case 7:{
+                processingBankAccount();
+                clearConsole();
+                break;
+            }
+            case 8:{
+                processUserValidating();
                 clearConsole();
                 break;
             }
@@ -334,6 +356,98 @@ void analysisOfTwoDimensionalArray(){
         String positiveOrNegativeMatrix=averageValue>0? "Positive matrix": "Negative matrix";
         System.out.println("Positive/Negative matrix: "+positiveOrNegativeMatrix);
 
+        work=endOrContinue();
+    }
+}
+
+void processingDivide(){
+    boolean work=true;
+    while(work) {
+        clearConsole();
+        System.out.print("Введите число которое нужно разделить: ");
+        int a = Integer.parseInt(getInput());
+        System.out.print("Введите число на которое нужно разделить: ");
+        int b = Integer.parseInt(getInput());
+        Divider divider = new Divider(a, b);
+        divider.divide();
+        divider.printResult();
+        work=endOrContinue();
+    }
+}
+
+void processingBankAccount(){
+    clearConsole();
+    System.out.print("Введите имя владельца аккаунта: ");
+    String ownerName = getInput();
+    System.out.print("Введите стартовый баланс: ");
+    double startBalance = Double.parseDouble(getInput());
+    BankAccount bankAccount= new BankAccount(ownerName,startBalance);
+    int choice=-1;
+    String[] bankOptions= new String[]{
+            "1.Положить деньги на счет",
+            "2.Снять деньги со счета",
+            "3.Вывести полную информацию о счете",
+            "0.Выйти"
+    };
+    while(choice!=0){
+        clearConsole();
+        for(String bankOption:bankOptions){
+            System.out.println(bankOption);
+        }
+        System.out.print("->");
+        choice=Integer.parseInt(getInput());
+        switch (choice){
+            case 1:{
+                clearConsole();
+                System.out.print("Введите сумму которую хотите положить на счет: ");
+                double amount= Double.parseDouble(getInput());
+                bankAccount.deposit(amount);
+                System.out.println(amount + " успешно зачислено на ваш счет");
+                System.out.println("Нажмите ENTER чтобы продолжить");
+                getInput();
+                break;
+            }
+            case 2:{
+                clearConsole();
+                System.out.print("Введите сумму которую хотите снять со счета: ");
+                double amount= Double.parseDouble(getInput());
+                bankAccount.withdraw(amount);
+                System.out.println(amount + " успешно снято с вашего счета");
+                System.out.println("Нажмите ENTER чтобы продолжить");
+                getInput();
+                break;
+            }
+            case 3:{
+                clearConsole();
+                bankAccount.printInfo();
+                System.out.println("Нажмите ENTER чтобы продолжить");
+                getInput();
+                break;
+            }
+            case 0: break;
+        }
+
+    }
+}
+
+void processUserValidating(){
+    clearConsole();
+    boolean work=true;
+    while(work) {
+        clearConsole();
+        System.out.print("Введите логин: ");
+        String login = getInput();
+        System.out.print("Введите email: ");
+        String email = getInput();
+        System.out.print("Введите возраст: ");
+        int age = Integer.parseInt(getInput());
+        try{
+            User user=new User(login,email,age);
+            System.out.println("Пользователь успешно создан!");
+            user.printUserInfo();
+        }catch (InvalidLoginException | InvalidEmailException | InvalidAgeException e){
+            System.out.println("Проблема в создании пользователя: "+ e.getMessage());
+        }
         work=endOrContinue();
     }
 }
