@@ -1,3 +1,5 @@
+package Classes;
+
 public class Divider {
     int a;
     int b;

@@ -1,6 +1,11 @@
+import Classes.BankAccount;
+import Classes.Divider;
+import Classes.PasswordManager;
+import Classes.User;
 import Exceptions.InvalidAgeException;
 import Exceptions.InvalidEmailException;
 import Exceptions.InvalidLoginException;
+
 
 void main() {
     int choice=-1;
@@ -14,6 +19,7 @@ void main() {
             "6.Деление",
             "7.Банковский аккаунт",
             "8.Создание пользователя с валидацией",
+            "9.Менеджер паролей",
             "0.Выход"
     };
     while(choice!=0){
@@ -62,6 +68,11 @@ void main() {
             }
             case 8:{
                 processUserValidating();
+                clearConsole();
+                break;
+            }
+            case 9:{
+                runPasswordManager();
                 clearConsole();
                 break;
             }
@@ -449,5 +460,159 @@ void processUserValidating(){
             System.out.println("Проблема в создании пользователя: "+ e.getMessage());
         }
         work=endOrContinue();
+    }
+}
+
+//void tryingWorkWithFile() throws IOException {
+//    String PATH = "src/Files";
+//    File directory= new File(PATH);
+//    if(directory.exists()){
+//        System.out.println("Папка существует");
+//    }else{
+//        System.out.println("Папка отсутствует");
+//    }
+//    File[] fileArray= directory.listFiles();
+//    if(fileArray==null){
+//        System.out.println("Файлы в папке отсутствуют");
+//    }else{
+//        System.out.println("Файлы в папке:");
+//        for(File file:fileArray){
+//            System.out.printf("%s \t- %s \t| %s \t| %s \t| %s \t| %s \t| %s\n",
+//                    file.getName(),file.isDirectory()?"Папка":"Не папка",
+//                    file.canExecute()?"Выполняемый":"Не выполняемый",
+//                    file.canRead()?"Читаемый":"Не читаемый",
+//                    file.canWrite()?"Можно записать":"Нельзя записать",
+//                    file.isHidden()?"Скрыт":"Видимый",
+//                    file.getAbsolutePath());
+//        }
+//    }
+//
+//    File newDirectory= new File(PATH,"newFolder");
+//    if(!newDirectory.exists()) {
+//        newDirectory.mkdir();
+//        System.out.println("Файл создан успешно");
+//    }else{
+//        System.out.println("Такой файл уже существует");
+//    }
+//
+//    File newFile= new File(PATH,"newFile.txt");
+//    if(!newFile.exists()){
+//        try {
+//            newFile.createNewFile();
+//            System.out.println("Файл успешно создан");
+//        }catch (IOException e){
+//            System.out.println("Ошибка создания файла "+e.toString());
+//        }
+//    }
+//    PrintWriter printWriter=new PrintWriter(newFile);
+//    printWriter.println("Первая строчка файла");
+//    printWriter.println("Вторая строчка файла");
+//    printWriter.println("Третья строчка файла");
+//    printWriter.close();
+//
+//    BufferedReader bufferedReader=null;
+//    if(newFile.exists()){
+//        bufferedReader=new BufferedReader(new FileReader(newFile));
+//        String line;
+//        while((line=bufferedReader.readLine())!=null){
+//            System.out.println(line);
+//        }
+//    }
+//    try {
+//        bufferedReader.close();
+//    }catch (IOException e){
+//        System.out.println(e.toString());
+//    }
+//
+//    getInput();
+//}
+
+void runPasswordManager(){
+    PasswordManager passwordManager=new PasswordManager();
+    boolean work=true;
+    String[] menu={
+      "1.Создать пароль",
+      "2.Отобразить пароли",
+      "3.Очистить пароли",
+      "0.Выход"
+    };
+    while(work){
+        clearConsole();
+        for(String menuElement:menu){
+            System.out.println(menuElement);
+        }
+        System.out.print("->");
+        int choice=Integer.parseInt(getInput());
+        switch (choice){
+            case 1:{
+                clearConsole();
+                System.out.print("Введите логин: ");
+                passwordManager.setLogin(getInput());
+                System.out.print("Введите место использования (Например: Mail.ru): ");
+                passwordManager.setPlaceWhereWillBeUsed(getInput());
+                System.out.print("Введите тип места (Например: Почта): ");
+                passwordManager.setTypeOfPlace(getInput());
+                clearConsole();
+                System.out.println("1.Ввести пароль вручную");
+                System.out.println("2.Сгенерировать случайный пароль");
+                System.out.print("->");
+                int passwordChoice=Integer.parseInt(getInput());
+                switch (passwordChoice){
+                    case 1:{
+                        clearConsole();
+                        System.out.print("Введите пароль для сохранения: ");
+                        passwordManager.setPassword(getInput());
+                        passwordManager.savePassword();
+                        System.out.println("Пароль успешно сохранен! Для продолжения нажмите ENTER");
+                        getInput();
+                        break;
+                    }
+                    case 2:{
+                        clearConsole();
+                        passwordManager.generateRandomPassword();
+                        System.out.println("Пароль успешно сгенерирован!");
+                        passwordManager.savePassword();
+                        System.out.println("Пароль успешно сохранен! Для продолжения нажмите ENTER");
+                        getInput();
+                        break;
+                    }
+                }
+                break;
+            }
+            case 2:{
+                clearConsole();
+                System.out.print("Введите тип для фильтрации (ENTER или all отобразят все пароли): ");
+                String typeOfPasswords=getInput();
+                passwordManager.getPasswords(typeOfPasswords);
+                System.out.println("Для продолжения нажмите ENTER");
+                getInput();
+                break;
+            }
+            case 3:{
+                clearConsole();
+                System.out.println("1.Очистить файл с паролями (без удаления)");
+                System.out.println("2.Удалить файл с паролями");
+                System.out.println("0.Выход");
+                System.out.print("->");
+                int deleteChoice=Integer.parseInt(getInput());
+                switch (deleteChoice){
+                    case 1:{
+                        passwordManager.clearFileWithPasswords();
+                        System.out.println("Файл успешно очищен! Для продолжения нажмите ENTER");
+                        getInput();
+                        break;
+                    }
+                    case 2:{
+                        passwordManager.deleteFileWithPasswords();
+                        System.out.println("Файл успешно удален! Для продолжения нажмите ENTER");
+                        getInput();
+                        break;
+                    }
+                    case 0: break;
+                }
+                break;
+            }
+            case 0: work=false;
+        }
     }
 }

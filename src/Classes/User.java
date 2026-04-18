@@ -1,3 +1,5 @@
+package Classes;
+
 import Exceptions.InvalidAgeException;
 import Exceptions.InvalidEmailException;
 import Exceptions.InvalidLoginException;
