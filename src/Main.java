@@ -1,7 +1,5 @@
-import Classes.BankAccount;
-import Classes.Divider;
-import Classes.PasswordManager;
-import Classes.User;
+import Classes.*;
+import Classes.Classwork.*;
 import Exceptions.InvalidAgeException;
 import Exceptions.InvalidEmailException;
 import Exceptions.InvalidLoginException;
@@ -28,7 +26,11 @@ void main() {
             System.out.println(menu);
         }
         System.out.print("->");
-        choice=Integer.parseInt(getInput());
+        try{
+            choice=Integer.parseInt(getInput());
+        }catch (Exception e){
+            choice=-1;
+        }
 
         switch (choice){
             case 1: {
@@ -76,7 +78,58 @@ void main() {
                 clearConsole();
                 break;
             }
+            case 10:{
+                clearConsole();
+                Animal[] animalsArray = {
+                        new Dog("Собака1", 3),
+                        new Cat("Кот1", 2),
+                        new Dog("Собака2", 5),
+                        new Cat("Кот2", 4)
+                };
+                for(Animal animal:animalsArray){
+                    animal.makeSound();
+                }
+                getInput();
+                break;
+            }
+            case 11:{
+                clearConsole();
+                Employee[] employees={
+                  new Manager("Manager1",100000),
+                  new Manager("Manager2",87000),
+                  new Developer("Developer1", 150000,1),
+                  new Developer("Developer2", 120000,2),
+                        new Developer("Developer3",100000,0),
+                        new Developer("Developer4",200000,999)
+                };
+                for(Employee employee:employees){
+                    employee.work();
+                }
+                getInput();
+                break;
+            }
+            case 12:{
+                clearConsole();
+                PaymentMethod[] paymentMethods={
+                        new BankCard("BC1",100000),
+                        new BankCard("BC2",6000),
+                        new BankCard("BC3",10000),
+                        new Wallet("W1",50000),
+                        new Wallet("W2",10000),
+                        new Wallet("W3",1000)
+                };
+                for(PaymentMethod paymentMethod:paymentMethods){
+                    System.out.printf("Попытка списать 10.000 у %s с балансом %f\n",paymentMethod.getOwnerName(),paymentMethod.getBalance());
+                    paymentMethod.pay(10000);
+                }
+                getInput();
+                break;
+            }
             case 0: break;
+            default: {
+                choice=-1;
+                break;
+            }
         }
     }
 }
@@ -181,7 +234,6 @@ void bullsAndCows(){
         int[] opponent = new int[4];
         for (int i = 0; i < opponent.length; i++) {
             opponent[i] = (int) (Math.random() * 10);
-            System.out.print(opponent[i]);
         }
         System.out.println("\n");
         boolean result = false;
