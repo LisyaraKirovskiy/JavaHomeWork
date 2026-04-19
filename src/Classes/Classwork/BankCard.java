@@ -9,10 +9,11 @@ public class BankCard extends PaymentMethod{
 
     @Override
     public void pay(double amount) {
-        if(super.getBalance()>amount) {
-            super.setBalance(-amount);
+        if(super.getBalance()>=amount) {
+            double newBalance= super.getBalance()-amount;
+            super.setBalance(newBalance);
         }else{
-            System.out.println("Ошибка: Недостаточно денег для оплаты");
+            System.out.println("\nОшибка: Недостаточно денег для оплаты");
         }
     }
 }

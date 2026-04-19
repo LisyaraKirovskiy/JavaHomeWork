@@ -78,7 +78,7 @@ void main() {
                 clearConsole();
                 break;
             }
-            case 10:{
+            case -10:{
                 clearConsole();
                 Animal[] animalsArray = {
                         new Dog("Собака1", 3),
@@ -92,7 +92,7 @@ void main() {
                 getInput();
                 break;
             }
-            case 11:{
+            case -11:{
                 clearConsole();
                 Employee[] employees={
                   new Manager("Manager1",100000),
@@ -108,7 +108,7 @@ void main() {
                 getInput();
                 break;
             }
-            case 12:{
+            case -12:{
                 clearConsole();
                 PaymentMethod[] paymentMethods={
                         new BankCard("BC1",100000),
@@ -119,8 +119,9 @@ void main() {
                         new Wallet("W3",1000)
                 };
                 for(PaymentMethod paymentMethod:paymentMethods){
-                    System.out.printf("Попытка списать 10.000 у %s с балансом %f\n",paymentMethod.getOwnerName(),paymentMethod.getBalance());
+                    System.out.printf("Попытка списать 10.000 у %s с балансом %f",paymentMethod.getOwnerName(),paymentMethod.getBalance());
                     paymentMethod.pay(10000);
+                    System.out.printf("\nБаланс %s после списывания средств: %f\n\n",paymentMethod.getOwnerName(),paymentMethod.getBalance());
                 }
                 getInput();
                 break;

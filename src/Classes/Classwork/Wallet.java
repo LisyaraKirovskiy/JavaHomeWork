@@ -8,10 +8,11 @@ public class Wallet extends PaymentMethod{
     @Override
     public void pay(double amount) {
         double amountWithCommission= amount+amount*0.02;
-        if(amountWithCommission<super.getBalance()){
-            super.setBalance(-amountWithCommission);
+        if(amountWithCommission<=super.getBalance()){
+            double newBalance= super.getBalance()-amountWithCommission;
+            super.setBalance(newBalance);
         }else{
-            System.out.println("Недостаточно денег для оплаты с комиссией");
+            System.out.println("\nНедостаточно денег для оплаты с комиссией");
         }
     }
 }
