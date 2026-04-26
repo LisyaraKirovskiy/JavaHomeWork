@@ -1,5 +1,6 @@
 import Classes.*;
 import Classes.Classwork.*;
+import Classes.Classwork.UserClasswork;
 import Exceptions.InvalidAgeException;
 import Exceptions.InvalidEmailException;
 import Exceptions.InvalidLoginException;
@@ -123,6 +124,68 @@ void main() {
                     paymentMethod.pay(10000);
                     System.out.printf("\nБаланс %s после списывания средств: %f\n\n",paymentMethod.getOwnerName(),paymentMethod.getBalance());
                 }
+                getInput();
+                break;
+            }
+            case -13:{
+                List<Student> students = List.of(
+                        new Student("Ivan", 18),
+                        new Student("Anna", 19),
+                        new Student("Ivan", 18),
+                        new Student("Petr", 20),
+                        new Student("Anna", 19)
+                );
+                System.out.println("List:\n");
+                students.forEach(System.out::println);
+                Set<Student> studentsSet = new HashSet<Student>(students);
+                System.out.println("\nSet:\n");
+                studentsSet.forEach(System.out::println);
+                getInput();
+                break;
+            }
+            case -14:{
+                List<Product> products = List.of(
+                        new Product("Milk", 80),
+                        new Product("Bread", 40),
+                        new Product("Milk", 80),
+                        new Product("Cheese", 300),
+                        new Product("Bread", 40),
+                        new Product("Milk", 80)
+                );
+                Map<Product, Integer> productMap=new HashMap<>();
+                products.forEach(product -> {
+                    if (productMap.containsKey(product)) {
+                        productMap.put(product, productMap.get(product)+1);
+                    }else{
+                        productMap.put(product,1);
+                    }
+                });
+                System.out.println("Plain text:");
+                productMap.forEach((key,value)->System.out.printf("%s - %d\n",key.name(),value));
+                getInput();
+                break;
+            }
+            case -15:{
+                List<UserClasswork> userClasswork = List.of(
+                        new UserClasswork("ivan", "ivan@mail.com"),
+                        new UserClasswork("anna", "anna@mail.com"),
+                        new UserClasswork("ivan", "ivan2@mail.com"),
+                        new UserClasswork("petr", "petr@mail.com"),
+                        new UserClasswork("anna", "anna@mail.com")
+                );
+                Map<String,UserClasswork> uniqueUsers=new HashMap<>();
+                List<UserClasswork> notUniqueUsers=new ArrayList<>();
+                userClasswork.forEach((user)->{
+                    if(!uniqueUsers.containsKey(user.login())) {
+                        uniqueUsers.put(user.login(),user);
+                    }else{
+                        notUniqueUsers.add(user);
+                    }
+                });
+                System.out.println("Уникальные: \n");
+                uniqueUsers.forEach((key,value)-> System.out.printf("%s ( %s )\n",key,value));
+                System.out.println("\nНе уникальные: \n");
+                notUniqueUsers.forEach(System.out::println);
                 getInput();
                 break;
             }
@@ -506,7 +569,7 @@ void processUserValidating(){
         System.out.print("Введите возраст: ");
         int age = Integer.parseInt(getInput());
         try{
-            User user=new User(login,email,age);
+            User user =new User(login,email,age);
             System.out.println("Пользователь успешно создан!");
             user.printUserInfo();
         }catch (InvalidLoginException | InvalidEmailException | InvalidAgeException e){
