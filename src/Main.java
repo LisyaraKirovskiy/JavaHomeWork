@@ -6,7 +6,7 @@ import Exceptions.InvalidEmailException;
 import Exceptions.InvalidLoginException;
 
 
-void main() {
+void main() throws IOException {
     int choice=-1;
     String[] menuElements=new String[]{
             "Сделайте ваш выбор:",
@@ -189,6 +189,65 @@ void main() {
                 getInput();
                 break;
             }
+            case -16:{
+                List<StudentClasswork> students = List.of(
+                        new StudentClasswork("Ivan", "A", 85),
+                        new StudentClasswork("Anna", "B", 92),
+                        new StudentClasswork("Petr", "A", 60),
+                        new StudentClasswork("Maria", "B", 74),
+                        new StudentClasswork("Oleg", "A", 95),
+                        new StudentClasswork("Elena", "C", 88)
+                );
+                List<String> bestOfTheBest=students.stream()
+                        .filter(s->s.getGrade()>80)
+                        .sorted((s1,s2)->Integer.compare(s2.getGrade(),s1.getGrade()))
+                        .map(StudentClasswork::getName)
+                        .collect(Collectors.toList());
+                System.out.println(bestOfTheBest);
+                getInput();
+                break;
+            }
+            case -17:{
+                Path path= Path.of("src","Files","students.txt");
+                try{
+                    Files.writeString(path,"Plain text\n" +
+                            "Ivan;A;85\n" +
+                            "Anna;B;92\n" +
+                            "Petr;A;60\n" +
+                            "Maria;B;74\n" +
+                            "Oleg;A;95\n" +
+                            "Elena;C;88",StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);
+                }catch (IOException e){
+                    throw new IOException("Ошибка записи файла students.txt", e);
+                }
+
+                List<String> lines= Files.readAllLines(path);
+                lines.forEach(System.out::println);
+                List<StudentClasswork> students=new ArrayList<>();
+                lines.forEach(
+                        (l) -> {
+                            String[] splited = l.split(";");
+                            if(splited.length==3)
+                            students.add(new StudentClasswork(splited[0], splited[1], Integer.parseInt(splited[2])));
+                        }
+                );
+
+                List<StudentClasswork> sortedStudents= students.stream()
+                                .filter((s)->s.getGrade()<70)
+                                .collect(Collectors.toList());
+
+                Path path2= Path.of("src","Files","bad_students.txt");
+                try{
+                    for(StudentClasswork student:sortedStudents){
+                        Files.writeString(path2,student.getName()+";"+student.getGroup()+";"+student.getGrade()+"\n",StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);
+                    }
+                }catch (IOException e){
+                    throw new IOException("Ошибка записи файла bad_students.txt", e);
+                }
+                getInput();
+                break;
+            }
+
             case 0: break;
             default: {
                 choice=-1;

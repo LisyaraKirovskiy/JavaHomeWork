@@ -1,0 +1,7 @@
+Plain text
+Ivan;A;85
+Anna;B;92
+Petr;A;60
+Maria;B;74
+Oleg;A;95
+Elena;C;88
